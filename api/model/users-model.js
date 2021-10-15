@@ -13,10 +13,14 @@ const insert = async (user) => {
     return newuser
 };
 
-
+const findBy = async (filter) => {
+    const found = await db('users').where(filter).first()
+    return found;
+}
 
 module.exports = {
     getAll,
     getById,
     insert,
+    findBy,
 };

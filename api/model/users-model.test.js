@@ -59,3 +59,15 @@ describe('insert users model function', () => {
     })
 })
 
+
+describe('findBy users model function ', () => {
+    it('findBy should return a user object', async () => {
+        await db('users').insert({ username: 'ehsan', password: '1234' })
+        const user = await Us.findBy({ username: 'ehsan' })
+        expect(user).toMatchObject({ username: 'ehsan', password: '1234' })
+
+    })
+
+
+})
+
