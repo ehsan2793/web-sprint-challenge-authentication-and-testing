@@ -2,11 +2,10 @@ const Us = require('../model/users-model');
 const checkpayload = (req, res, next) => {
     try {
         const { username, password } = req.body;
-        if (!username || !password) {
+        if (!username.trim() || !password.trim()) {
             return next({ message: `username and password required` });
-        } else if (password.length < 4) {
-            next({ message: `password must be at least 3 characters long` });
         }
+        req.body = { username: username.trim(), password: password.trim() };
         next();
     } catch (error) {
         next(error);
