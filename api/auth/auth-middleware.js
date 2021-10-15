@@ -1,52 +1,50 @@
-const Us = require('../model/users-model')
+const Us = require('../model/users-model');
 const checkpayload = (req, res, next) => {
     try {
-        const { username, password } = req.body
+        const { username, password } = req.body;
         if (!username || !password) {
-            return next({ message: `username and password required` })
+            return next({ message: `username and password required` });
         } else if (password.length < 4) {
-            next({ message: `password must be at least 3 characters long` })
+            next({ message: `password must be at least 3 characters long` });
         }
-        next()
+        next();
     } catch (error) {
         next(error);
     }
-}
+};
 
 const checkUsernameIsUnique = async (req, res, next) => {
     try {
-        const username = req.body.username
-        const userIsunique = await Us.findBy({ username: username })
+        const username = req.body.username;
+        const userIsunique = await Us.findBy({ username: username });
         if (userIsunique === undefined) {
-            next()
+            next();
         } else {
-            next({ message: "username taken" })
+            next({ message: 'username taken' });
         }
-
     } catch (error) {
         next(error);
     }
-}
+};
 
 const checkUsernameExist = async (req, res, next) => {
     try {
-        const { username, password } = req.body
-        const exist = await Us.findBy({ username: username })
-        console.log(exist);
+        const { username, password } = req.body;
+        const exist = await Us.findBy({ username: username });
         if (!username || !password) {
-            return next({ message: `username and password required` })
+            return next({ message: `username and password required` });
         }
         if (exist === undefined) {
-            return next({ message: "invalid credentials" })
+            return next({ message: 'invalid credentials' });
         }
-        next()
+        next();
     } catch (error) {
         next(error);
     }
-}
+};
 
 module.exports = {
     checkpayload,
     checkUsernameIsUnique,
     checkUsernameExist,
-}
+};
