@@ -4,6 +4,17 @@ const server = require('./server');
 const db = require('../data/dbConfig');
 const bcrypt = require('bcryptjs');
 
+beforeAll(async () => {
+  await db.migrate.rollback()
+  await db.migrate.latest()
+})
+beforeEach(async () => {
+  await db('users').truncate()
+})
+afterAll(async () => {
+  await db.destroy()
+})
+
 test('sanity', () => {
   expect(true).toBe(true);
 });
@@ -24,9 +35,14 @@ describe('server.js', () => {
     });
   });
 
-  describe('[Post]', () => {
-    it.todo('create a new user in the data base')
-
+  describe('[Post] /api/auth/register', () => {
+    it('request with out username or password will give error  "username and password required" ', async () => {
+      const res = await request(server).post('/api/auth/register').send({
+        username: '',
+        password: '12345'
+      })
+      expect(res.body.message).toBe('username and password required')
+    })
   })
 
 });
