@@ -1,9 +1,13 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs')
+const { checkpayload, checkUsernameIsUnique } = require('./auth-middleware')
+router.post('/register', checkpayload, checkUsernameIsUnique, (req, res, next) => {
+  try {
+    res.status(200).json('yay')
+  } catch (error) {
+    next()
+  }
 
-router.post('/register', (req, res) => {
-
-  res.end('implement register, please!');
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
