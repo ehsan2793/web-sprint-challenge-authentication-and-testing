@@ -59,6 +59,8 @@ router.post('/login', checkpayload, checkUsernameExist, (req, res, next) => {
         message: `welcome, ${req.user.username}`,
         token: token
       })
+    } else {
+      next({ message: "invalid credentials" })
     }
   } catch (error) {
     next(error)

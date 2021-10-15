@@ -19,7 +19,7 @@ const checkUsernameIsUnique = async (req, res, next) => {
         const userIsunique = await Us.findBy({ username: username });
         if (userIsunique === undefined) {
             next();
-        } else {
+        } else if (userIsunique) {
             next({ message: 'username taken' });
         }
     } catch (error) {
