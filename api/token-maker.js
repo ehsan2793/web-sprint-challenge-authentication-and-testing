@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET || 'ssh'
+const SECRET = process.env.SECRET || 'shh'
 
 const tokenMaker = (user) => {
     const payload = {
@@ -9,7 +9,7 @@ const tokenMaker = (user) => {
     const options = {
         expiresIn: '1d'
     }
-    return jwt.sign(payload, JWT_SECRET, options,)
+    return jwt.sign(payload, SECRET, options,)
 }
 
 module.exports = {

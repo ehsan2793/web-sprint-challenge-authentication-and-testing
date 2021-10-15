@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'ssh'
+const SECRET = process.env.SECRET || 'shh'
 
 module.exports = (req, res, next) => {
   const token = req.headers.authorization;
@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
     })
 
   }
-  jwt.verify(token, JWT_SECRET, (err) => {
+  jwt.verify(token, SECRET, (err) => {
     if (err) {
       return next({ status: 401, message: 'invalid token' })
     }
