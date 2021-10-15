@@ -17,7 +17,7 @@ router.post(
       const hash = bcrypt.hashSync(req.body.password, 4);
       req.body.password = hash;
       const newuser = await insert(req.body);
-      res.status(201).json(newuser);
+      res.status(200).json(newuser);
     } catch (error) {
       next(error);
     }
@@ -60,7 +60,7 @@ router.post('/login', checkpayload, checkUsernameExist, (req, res, next) => {
         token: token
       })
     } else {
-      next({ message: "invalid credentials" })
+      next({ status: 401, message: "invalid credentials" })
     }
   } catch (error) {
     next(error)
