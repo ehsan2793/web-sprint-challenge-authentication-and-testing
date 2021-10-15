@@ -13,6 +13,8 @@ const insert = async (user) => {
     return newuser
 };
 
+
+
 module.exports = {
     getAll,
     getById,
