@@ -1,6 +1,9 @@
 const checkpayload = (req, res, next) => {
     try {
-        res.status(401)
+        const { username, password } = req.body
+        if (!username || !password) {
+            next({ message: `username and password required` })
+        }
         next()
     } catch (error) {
         next(error);
