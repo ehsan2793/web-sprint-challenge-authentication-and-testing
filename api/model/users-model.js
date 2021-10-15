@@ -1,10 +1,11 @@
 const db = require('../../data/dbConfig');
 
 const getAll = () => {
-    return "hello"
+    return db('users')
 };
 const getById = async (id) => {
-    return "hello"
+    const singleUser = await db('users').where('id', id).first();
+    return singleUser
 };
 const insert = async (user) => {
 
