@@ -2,7 +2,7 @@ const Us = require('../model/users-model');
 const checkpayload = (req, res, next) => {
     try {
         const { username, password } = req.body;
-        if (!username.trim() || !password.trim()) {
+        if (!username || !password) {
             return next({ message: `username and password required` });
         }
         req.body = { username: username.trim(), password: password.trim() };
