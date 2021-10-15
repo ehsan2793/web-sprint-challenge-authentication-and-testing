@@ -36,8 +36,11 @@ const checkUsernameExist = async (req, res, next) => {
         }
         if (exist === undefined) {
             return next({ message: 'invalid credentials' });
+        } else {
+            req.user = exist
+            next();
         }
-        next();
+
     } catch (error) {
         next(error);
     }

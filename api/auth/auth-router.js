@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
+const { tokenMaker } = require('../token-maker')
 const { insert } = require('../model/users-model');
 const {
   checkpayload,
@@ -16,7 +17,7 @@ router.post(
       const hash = bcrypt.hashSync(req.body.password, 4);
       req.body.password = hash;
       const newuser = await insert(req.body);
-      res.status(200).json(newuser);
+      res.status(201).json(newuser);
     } catch (error) {
       next();
     }
@@ -49,8 +50,19 @@ router.post(
   },
 );
 
-router.post('/login', checkUsernameExist, (req, res) => {
-  res.end('implement login, please!');
+router.post('/login', checkpayload, checkUsernameExist, (req, res, next) => {
+  try {
+    const userExist = req.user
+    if (userExist && bcrypt.compareSync(req.body.password, userExist.password)) {
+      const token = tokenMaker(req.user)
+      res.status(200).json({
+        message: `welcome, ${req.user.username}`,
+        token: token
+      })
+    }
+  } catch (error) {
+    next(error)
+  }
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
@@ -77,3 +89,4 @@ router.post('/login', checkUsernameExist, (req, res) => {
 });
 
 module.exports = router;
+
