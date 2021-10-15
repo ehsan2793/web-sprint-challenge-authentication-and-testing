@@ -8,8 +8,9 @@ const getById = async (id) => {
     return singleUser
 };
 const insert = async (user) => {
-
-    return "hello"
+    const [id] = await db('users').insert(user)
+    const newuser = getById(id)
+    return newuser
 };
 
 module.exports = {
