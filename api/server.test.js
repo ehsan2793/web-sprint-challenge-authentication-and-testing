@@ -34,7 +34,7 @@ describe('server.js', () => {
   });
 
   describe('[Post] /api/auth/register', () => {
-    it('request with out username or password will give error  "username and password required" ', async () => {
+    it('request with out username or password will give error "username and password required" ', async () => {
       const res = await request(server).post('/api/auth/register').send({
         username: '',
         password: '12345',
