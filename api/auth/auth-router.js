@@ -1,14 +1,27 @@
 const router = require('express').Router();
-const bcrypt = require('bcryptjs')
-const { checkpayload, checkUsernameIsUnique, checkUsernameExist } = require('./auth-middleware')
-router.post('/register', checkpayload, checkUsernameIsUnique, (req, res, next) => {
-  try {
-    res.status(200).json('yay')
-  } catch (error) {
-    next()
-  }
+const bcrypt = require('bcryptjs');
+const { insert } = require('../model/users-model');
+const {
+  checkpayload,
+  checkUsernameIsUnique,
+  checkUsernameExist,
+} = require('./auth-middleware');
 
-  /*
+router.post(
+  '/register',
+  checkpayload,
+  checkUsernameIsUnique,
+  async (req, res, next) => {
+    try {
+      const hash = bcrypt.hashSync(req.body.password, 4);
+      req.body.password = hash;
+      const newuser = await insert(req.body);
+      res.status(200).json(newuser);
+    } catch (error) {
+      next();
+    }
+
+    /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
     DO NOT EXCEED 2^8 ROUNDS OF HASHING!
@@ -33,7 +46,8 @@ router.post('/register', checkpayload, checkUsernameIsUnique, (req, res, next) =
     4- On FAILED registration due to the `username` being taken,
       the response body should include a string exactly as follows: "username taken".
   */
-});
+  },
+);
 
 router.post('/login', checkUsernameExist, (req, res) => {
   res.end('implement login, please!');
