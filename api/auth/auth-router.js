@@ -19,7 +19,7 @@ router.post(
       const newuser = await insert(req.body);
       res.status(201).json(newuser);
     } catch (error) {
-      next();
+      next(error);
     }
 
     /*
