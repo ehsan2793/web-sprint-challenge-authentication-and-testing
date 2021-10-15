@@ -43,6 +43,15 @@ describe('server.js', () => {
       })
       expect(res.body.message).toBe('username and password required')
     })
+    it('the new user password will be saved in the database as a hashed password ', async () => {
+      await request(server).post('/api/auth/register').send({
+        username: '          jonny',
+        password: '12345'
+      })
+      const newuser = await db('users').where('username', 'jonny').first()
+      expect(bcrypt.compareSync('12345', newuser.password)).toBeTruthy()
+    })
   })
+
 
 });
