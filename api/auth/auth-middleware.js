@@ -3,7 +3,7 @@ const checkpayload = (req, res, next) => {
     try {
         const { username, password } = req.body;
         if (!username || !password) {
-            return next({ message: `username and password required` });
+            return next({ status: 401, message: `username and password required` });
         }
         req.body = { username: username.trim(), password: password.trim() };
         next();
@@ -19,7 +19,7 @@ const checkUsernameIsUnique = async (req, res, next) => {
         if (userIsunique === undefined) {
             next();
         } else if (userIsunique) {
-            next({ message: 'username taken' });
+            next({ status: 401, message: 'username taken' });
         }
     } catch (error) {
         next(error);
@@ -34,7 +34,10 @@ const checkUsernameExist = async (req, res, next) => {
             return next({ message: `username and password required` });
         }
         if (exist === undefined) {
-            return next({ message: 'invalid credentials' });
+            return next({
+                status: 401,
+                message: 'invalid credentials'
+            });
         } else {
             req.user = exist
             next();
