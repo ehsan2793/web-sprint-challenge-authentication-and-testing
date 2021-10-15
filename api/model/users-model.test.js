@@ -67,6 +67,10 @@ describe('findBy users model function ', () => {
         expect(user).toMatchObject({ username: 'ehsan', password: '1234' })
 
     })
+    it('findBy shoud retun undefined if notting is found', async () => {
+        const user = await Us.findBy({ username: 'ehsan' })
+        expect(user).toBe(undefined)
+    });
 
 
 })

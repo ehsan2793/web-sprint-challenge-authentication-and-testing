@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs')
-const { checkpayload, checkUsernameIsUnique } = require('./auth-middleware')
+const { checkpayload, checkUsernameIsUnique, checkUsernameExist } = require('./auth-middleware')
 router.post('/register', checkpayload, checkUsernameIsUnique, (req, res, next) => {
   try {
     res.status(200).json('yay')
@@ -35,7 +35,7 @@ router.post('/register', checkpayload, checkUsernameIsUnique, (req, res, next) =
   */
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', checkUsernameExist, (req, res) => {
   res.end('implement login, please!');
   /*
     IMPLEMENT

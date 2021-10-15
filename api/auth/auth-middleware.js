@@ -1,8 +1,11 @@
+const Us = require('../model/users-model')
 const checkpayload = (req, res, next) => {
     try {
         const { username, password } = req.body
         if (!username || !password) {
-            next({ message: `username and password required` })
+            return next({ message: `username and password required` })
+        } else if (password.length < 4) {
+            next({ message: `password must be at least 3 characters long` })
         }
         next()
     } catch (error) {
@@ -10,9 +13,32 @@ const checkpayload = (req, res, next) => {
     }
 }
 
-const checkUsernameIsUnique = (req, res, next) => {
+const checkUsernameIsUnique = async (req, res, next) => {
     try {
-        res.status(401)
+        const username = req.body.username
+        const userIsunique = await Us.findBy({ username: username })
+        if (userIsunique === undefined) {
+            next()
+        } else {
+            next({ message: "username taken" })
+        }
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+const checkUsernameExist = async (req, res, next) => {
+    try {
+        const { username, password } = req.body
+        const exist = await Us.findBy({ username: username })
+        console.log(exist);
+        if (!username || !password) {
+            return next({ message: `username and password required` })
+        }
+        if (exist === undefined) {
+            return next({ message: "invalid credentials" })
+        }
         next()
     } catch (error) {
         next(error);
@@ -22,4 +48,5 @@ const checkUsernameIsUnique = (req, res, next) => {
 module.exports = {
     checkpayload,
     checkUsernameIsUnique,
+    checkUsernameExist,
 }
